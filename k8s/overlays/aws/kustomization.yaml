@@ -1,5 +1,11 @@
-bases:
+resources:
   - ../../base
-patchesStrategicMerge: []
+images:
+  - name: <registry>/mc-api
+    newName: ghcr.io/${REPO}/mc-api
+    newTag: latest
+  - name: <registry>/mc-web
+    newName: ghcr.io/${REPO}/mc-web
+    newTag: latest
 
 

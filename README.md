@@ -68,9 +68,11 @@ app/
    docker build -t <registry>/mc-api:dev ../../app/api
    docker build -t <registry>/mc-web:dev ../../app/web
    ```
-7) Deploy K8s manifests:
+7) Deploy K8s manifests (set repo for Kustomize overlays):
    ```bash
-   kubectl apply -k k8s/overlays/aws
+   # Set your repo path for GHCR, e.g. owner/repo
+   export REPO=krishankantgit/Multi-Cloud-Infrastructure-as-Code-Project
+   kubectl kustomize k8s/overlays/aws | envsubst | kubectl apply -f -
    ```
 
 ## Ansible
@@ -87,6 +89,18 @@ ansible-playbook -i inventory.ini site.yml
 
 ### Enable GHCR
 No extra secrets needed—`GITHUB_TOKEN` is used automatically. In Kubernetes manifests, replace `<registry>` with `ghcr.io/<owner>/<repo>` and tag `latest` or `sha-<commit>`.
+
+### Cloud Credentials as GitHub Secrets
+- AWS (for `terraform/envs/aws`):
+  - `AWS_ACCESS_KEY_ID`
+  - `AWS_SECRET_ACCESS_KEY`
+  - Optional: `AWS_REGION` (default `us-east-1`)
+- GCP (for `terraform/envs/gcp`):
+  - `GOOGLE_CREDENTIALS` (JSON key contents of a service account with appropriate roles)
+- Azure (for `terraform/envs/azure`):
+  - `ARM_CLIENT_ID`, `ARM_CLIENT_SECRET`, `ARM_TENANT_ID`, `ARM_SUBSCRIPTION_ID`
+
+The `terraform` workflow reads these from the environment when running init/plan/apply. Set them in GitHub → Repository → Settings → Secrets and variables → Actions → New repository secret.
 
 ## Notes
 - This is a scaffold with stubs to adapt for your organization.

@@ -19,6 +19,16 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.7.5
+      - name: Export cloud creds (AWS/GCP/Azure if present)
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $GITHUB_ENV
+          echo "AWS_REGION=${AWS_REGION}" >> $GITHUB_ENV
+          echo "GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}" >> $GITHUB_ENV
+          echo "ARM_CLIENT_ID=${ARM_CLIENT_ID}" >> $GITHUB_ENV
+          echo "ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=${ARM_TENANT_ID}" >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}" >> $GITHUB_ENV
       - name: Terraform fmt
         run: terraform -chdir=terraform/envs/aws fmt -check
       - name: Terraform init
@@ -36,6 +46,16 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.7.5
+      - name: Export cloud creds (AWS/GCP/Azure if present)
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $GITHUB_ENV
+          echo "AWS_REGION=${AWS_REGION}" >> $GITHUB_ENV
+          echo "GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}" >> $GITHUB_ENV
+          echo "ARM_CLIENT_ID=${ARM_CLIENT_ID}" >> $GITHUB_ENV
+          echo "ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=${ARM_TENANT_ID}" >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}" >> $GITHUB_ENV
       - name: Terraform init
         run: terraform -chdir=${{ github.event.inputs.env }} init
       - name: Terraform apply
