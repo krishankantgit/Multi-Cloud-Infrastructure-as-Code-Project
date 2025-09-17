@@ -24,4 +24,12 @@ output "network_self_link" {
   value = module.network.network_self_link
 }
 
+output "subnetwork_name" {
+  value = module.network.subnetwork_name
+}
+
+output "subnetwork_self_link" {
+  value = module.network.subnetwork_self_link
+}
+
 

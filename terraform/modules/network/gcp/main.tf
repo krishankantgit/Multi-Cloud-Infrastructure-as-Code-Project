@@ -16,5 +16,7 @@ resource "google_compute_subnetwork" "primary" {
 variable "region" { type = string, default = "us-central1" }
 
 output "network_self_link" { value = google_compute_network.this.self_link }
+output "subnetwork_name" { value = google_compute_subnetwork.primary.name }
+output "subnetwork_self_link" { value = google_compute_subnetwork.primary.self_link }
 
 
