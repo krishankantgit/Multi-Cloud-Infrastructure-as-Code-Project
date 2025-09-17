@@ -1,0 +1,48 @@
+name: images
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'app/**'
+  tags:
+    - 'v*'
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_API: ${{ github.repository }}/mc-api
+  IMAGE_WEB: ${{ github.repository }}/mc-web
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push API
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app/api
+          push: true
+          tags: |
+            ghcr.io/${{ env.IMAGE_API }}:sha-${{ github.sha }}
+            ghcr.io/${{ env.IMAGE_API }}:latest
+      - name: Build and push WEB
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app/web
+          push: true
+          tags: |
+            ghcr.io/${{ env.IMAGE_WEB }}:sha-${{ github.sha }}
+            ghcr.io/${{ env.IMAGE_WEB }}:latest
+
+

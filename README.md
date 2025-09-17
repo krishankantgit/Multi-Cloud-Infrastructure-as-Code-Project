@@ -83,6 +83,10 @@ ansible-playbook -i inventory.ini site.yml
 ## CI (GitHub Actions)
 - PRs: Terraform fmt/validate/plan
 - Manual: `workflow_dispatch` to apply to selected environment with approval
+- Images: builds and pushes `mc-api` and `mc-web` to GHCR on pushes to `main`
+
+### Enable GHCR
+No extra secrets needed—`GITHUB_TOKEN` is used automatically. In Kubernetes manifests, replace `<registry>` with `ghcr.io/<owner>/<repo>` and tag `latest` or `sha-<commit>`.
 
 ## Notes
 - This is a scaffold with stubs to adapt for your organization.
