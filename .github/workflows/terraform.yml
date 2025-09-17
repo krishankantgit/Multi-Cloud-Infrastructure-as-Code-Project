@@ -1,0 +1,44 @@
+name: terraform
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/**'
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment path (e.g., terraform/envs/aws)'
+        required: true
+        default: 'terraform/envs/aws'
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+      - name: Terraform fmt
+        run: terraform -chdir=terraform/envs/aws fmt -check
+      - name: Terraform init
+        run: terraform -chdir=terraform/envs/aws init
+      - name: Terraform validate
+        run: terraform -chdir=terraform/envs/aws validate
+      - name: Terraform plan
+        run: terraform -chdir=terraform/envs/aws plan -input=false || true
+
+  apply:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+      - name: Terraform init
+        run: terraform -chdir=${{ github.event.inputs.env }} init
+      - name: Terraform apply
+        run: terraform -chdir=${{ github.event.inputs.env }} apply -auto-approve -input=false
+
+

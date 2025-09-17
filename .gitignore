@@ -1,0 +1,36 @@
+# General
+.DS_Store
+*.log
+*.tmp
+*.swp
+*.swo
+node_modules/
+dist/
+build/
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+terraform.tfvars
+
+# Ansible
+.retry
+
+# Kubernetes
+*.yaml.tmp
+
+# Python
+__pycache__/
+*.pyc
+
+# Docker
+.dockerignore
+
+

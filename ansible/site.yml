@@ -1,0 +1,11 @@
+---
+- name: Post-provision bootstrap
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure basic packages
+      package:
+        name: ["curl", "jq"]
+        state: present
+
+
